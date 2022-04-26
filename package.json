@@ -1,0 +1,23 @@
+{
+  "name": "cloudproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szomer/CloudProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/szomer/CloudProject/issues"
+  },
+  "homepage": "https://github.com/szomer/CloudProject#readme",
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}
