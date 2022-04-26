@@ -1,3 +1,11 @@
+//--------SETUP--------
+//npm init --yes
+//npm install express
+//npm install pg
+//npm install -g heroku
+
+
+
 const express = require('express');
 const path = require('path');
 
