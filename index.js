@@ -36,8 +36,11 @@ app.listen(port, () => {
 });
 
 
-// Test db
-app.get('/db', async (req, res) => {
+
+app.get('/', (req, res) => {
+  console.log("welcome");
+
+}).get('/db', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM test_table');
