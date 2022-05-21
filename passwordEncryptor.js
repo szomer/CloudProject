@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 
 // salt for encryption
-const salt = 'shouldBeHardToGuessAndUniqueForEachProjectAHAHAAHaba@132';
+const salt = 'somerandomassstringhere1234567!@';
 
 module.exports = function (password) {
   if (typeof password !== 'string') { return null; } // secure?

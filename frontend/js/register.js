@@ -33,7 +33,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   // Register the user through the REST-api
   let result = {};
   try {
-    result = await (await fetch('/api/customers', {
+    result = await (await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)

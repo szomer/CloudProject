@@ -14,6 +14,8 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     requestBody[element.name] = element.value;
   }
 
+  console.log("reqbody: " + requestBody);
+
   let result;
   try {
     result = await (await fetch('/api/login', {
@@ -24,14 +26,17 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   }
   catch (ignore) { }
 
-  console.log(result);
-
-
   if (!result || result._error) {
-    document.querySelector('.login').innerHTML = renderLoginForm(true);
+    console.log("log in error")
     return;
   }
 
-  location.reload();
-
+  console.log("succesfully logged in");
 });
+
+async function getData() {
+  let data = await fetch('api/data');
+  console.log('data: ' + JSON.stringify(data));
+}
+
+getData();

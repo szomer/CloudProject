@@ -8,7 +8,6 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const store = require('better-express-store');
-const acl = require('./acl');
 const passwordEncryptor = require('./passwordEncryptor');
 
 const passwordField = 'password';
@@ -44,7 +43,7 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
 
-app.get('/db', async (req, res) => {
+app.get('api/data', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
@@ -52,7 +51,6 @@ app.get('/db', async (req, res) => {
 
     console.log(results);
 
-    response.writeHead(200, { "Content-Type": "text/plain" });
     res.send(results);
 
   } catch (err) {
@@ -68,6 +66,23 @@ app.post('/api/login', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users WHERE email = :email AND password = :password');
+    const results = { 'results': (result) ? result.rows : null };
+
+    res.send(results);
+
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+app.post('/api/register', async (req, res) => {
+  // Encrypt the password
+  req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
+
+  try {
+    const client = await pool.connect();
+    const result = await client.query("'INSERT INTO users (name, email, type, password) values ('Suzanne Zomer', 'myemail2@gmail.com', 'customer', '12345678')");
     const results = { 'results': (result) ? result.rows : null };
 
     res.send(results);
