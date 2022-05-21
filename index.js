@@ -1,11 +1,12 @@
 // Modules
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const store = require('better-express-store');
 const passwordEncryptor = require('./passwordEncryptor');
 
-// HTML Name fields 
+// HTML fields for user input
 const passwordField = 'password';
 const emailField = 'email';
 const firstNameField = 'firstName';
@@ -32,7 +33,12 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
 
 // Express middleware to read request body
-// app.use(express.json({ limit: '100MB' }));
+app.use(express.json({ limit: '100MB' }));
+
+// Create application/json parser
+var jsonParser = bodyParser.json()
+// Create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 // Listen on port
 app.listen(port, () => {
@@ -47,8 +53,7 @@ app.get('/api/data', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
 
-    console.log(result.rows);
-    res.send(result);
+    res.send(result.rows);
 
   } catch (err) {
     console.error(err);
@@ -57,7 +62,7 @@ app.get('/api/data', async (req, res) => {
 });
 
 // Log in user
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', urlencodedParser, async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
@@ -76,7 +81,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Register new user
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', urlencodedParser, async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 

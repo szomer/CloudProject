@@ -16,6 +16,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   let requestBody = {};
   for (let element of formElements) {
     if (element.type === 'submit') { continue; }
+    console.log(element.name + ', ' + element.value);
     requestBody[element.name] = element.value;
   }
 
