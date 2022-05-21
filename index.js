@@ -43,13 +43,11 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
 
-app.get('api/data', async (req, res) => {
+app.get('/api/data', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
     const results = { 'results': (result) ? result.rows : null };
-
-    console.log(results);
 
     res.send(results);
 
@@ -65,7 +63,7 @@ app.post('/api/login', async (req, res) => {
 
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM users WHERE email = :email AND password = :password');
+    const result = await client.query("SELECT * FROM users WHERE email = 'myemail@gmail.com' AND password = '12345678'");
     const results = { 'results': (result) ? result.rows : null };
 
     res.send(results);
