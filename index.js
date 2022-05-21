@@ -61,7 +61,7 @@ app.get('/db', async (req, res) => {
   }
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
