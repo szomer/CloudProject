@@ -1,16 +1,15 @@
-//------INSTALLATIONS------
-//npm init --yes
-//npm install express
-//npm install pg
-//npm install -g heroku
-
+// Modules
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const store = require('better-express-store');
 const passwordEncryptor = require('./passwordEncryptor');
 
+// HTML Name fields 
 const passwordField = 'password';
+const emailField = 'email';
+const firstNameField = 'firstName';
+const lastNameField = 'lastName';
 
 
 // DB connection
@@ -30,26 +29,26 @@ const port = process.env.PORT || 3000;
 
 // Provide website documents
 app.use(express.static(path.join(__dirname, 'frontend')));
-
 app.set('view engine', 'ejs');
 
-
 // Express middleware to read request body
-app.use(express.json({ limit: '100MB' }));
-
+// app.use(express.json({ limit: '100MB' }));
 
 // Listen on port
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
 
+
+// Return all data from the table
 app.get('/api/data', async (req, res) => {
+
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
-    const results = { 'results': (result) ? result.rows : null };
 
-    res.send(results);
+    console.log(result.rows);
+    res.send(result);
 
   } catch (err) {
     console.error(err);
@@ -57,16 +56,18 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+// Log in user
 app.post('/api/login', async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
   try {
     const client = await pool.connect();
-    const result = await client.query("SELECT * FROM users WHERE email = 'myemail@gmail.com' AND password = '12345678'");
-    const results = { 'results': (result) ? result.rows : null };
+    const result = await client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "'");
 
-    res.send(results);
+    console.log(result.rows);
+
+    res.send(result);
 
   } catch (err) {
     console.error(err);
@@ -74,29 +75,29 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Register new user
 app.post('/api/register', async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
+  // Combine first and last name
+  let fullName = (req.body[firstNameField] + ' ' + req.body[lastNameField]);
+
   try {
     const client = await pool.connect();
-    const result = await client.query("'INSERT INTO users (name, email, type, password) values ('Suzanne Zomer', 'myemail2@gmail.com', 'customer', '12345678')");
-    const results = { 'results': (result) ? result.rows : null };
+    const result = await client.query("'INSERT INTO users (name, email, type, password) VALUES ('" + fullName + "', '" + req.body[emailField] + "', 'customer', '" + req.body[passwordField] + "')");
 
-    res.send(results);
+    console.log(result.rows);
+
+    // const results = { 'results': (result) ? result.rows : null };
+
+    res.send(result);
 
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   }
 });
-
-
-// Import the rest-api setup function
-// const setupRESTapi = require('./rest-api');
-// setupRESTapi(app, pool);
-
-
 
 
 

@@ -36,7 +36,11 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 
 async function getData() {
   let data = await fetch('api/data');
-  console.log('data: ' + JSON.stringify(data));
+
+  console.log(JSON.stringify(data));
+  for (let row of data.rows) {
+    console.log(JSON.stringify(row));
+  }
 }
 
 getData();
