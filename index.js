@@ -28,6 +28,14 @@ const app = express();
 // Set port
 const port = process.env.PORT || 3000;
 
+// Session
+app.use(session({
+  secret: 'someUnusualStringThatIsUniqueForThisProject',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: 'auto' },
+}));
+
 // Provide website documents
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'ejs');
@@ -45,24 +53,17 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
 
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
 
-// Return all data from the user table
-app.get('/api/data', async (req, res) => {
-
-  try {
-    const client = await pool.connect();
-    const result = await client.query('SELECT * FROM users');
-
-    delete result.password;
-
-    const results = { 'results': (result) ? result.rows : null };
-
-    res.json(results);
-
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
+app.get('/home', function (req, res) {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.send('Please login to view this page!');
   }
+  res.end();
 });
 
 // Log in user
@@ -74,16 +75,28 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "'");
 
-    delete result.password;
-
     const results = { 'results': (result) ? result.rows : null };
 
-    res.json(results);
+    if (!result._error) {
+      req.session.user = results[0];
+      res.redirect('/home');
+    }
 
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
   }
+});
+
+// Check if logged in
+app.get('/api/login', (req, res) => {
+  res.json(req.session.user || { _error: 'Not logged in' });
+});
+
+// Log out user
+app.delete('/api/login', (req, res) => {
+  delete req.session.user;
+  res.json({ success: 'logged out' });
 });
 
 // Register new user
@@ -108,7 +121,24 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
+// Return all data from the user table
+app.get('/api/data', async (req, res) => {
 
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM users');
+
+    delete result.password;
+
+    const results = { 'results': (result) ? result.rows : null };
+
+    res.json(results);
+
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
 
 // heroku pg:psql
 //  create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
