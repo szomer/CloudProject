@@ -34,10 +34,16 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   console.log("succesfully logged in");
 });
 
+
+
 async function getData() {
   let data = await fetch('api/data');
 
   console.log(data);
+  console.log(data.body);
+  console.log(data.json);
+  console.log(data.text);
+
 }
 
 getData();

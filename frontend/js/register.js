@@ -42,6 +42,11 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   }
   catch (ignore) { }
 
+  console.log(result);
+  console.log(result.body);
+  console.log(result.json);
+  console.log(result.text);
+
   if (!result.changes) {
     document.querySelector('.register').innerHTML = `
       <h3>Something went wrong</h3>
