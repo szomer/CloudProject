@@ -16,17 +16,19 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 
   console.log("reqbody: " + requestBody);
 
-  let result;
+  let response;
   try {
-    result = await (await fetch('/api/login', {
+    response = await (await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
-    })).json();
+    }));
+
+    console.log(response.json());
   }
   catch (ignore) { }
 
-  if (!result || result._error) {
+  if (!response || response._error) {
     console.log("log in error")
     return;
   }
@@ -35,15 +37,10 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 });
 
 
-
 async function getData() {
-  let data = await fetch('api/data');
-
-  console.log(data);
-  console.log(data.body);
-  console.log(data.json);
-  console.log(data.text);
-
-}
+  await fetch('api/data')
+    .then(response => response.json())
+    .then(data => console.log(data));
+};
 
 getData();

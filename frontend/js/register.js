@@ -26,28 +26,20 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 
-  // Delete the passwordRepeated property
-  // (this making the properties in
-  //  requestBody match the columns in the DB)
   delete requestBody.passwordRepeated;
 
-  // Register the user through the REST-api
-  let result = {};
+  let response = {};
   try {
-    result = await (await fetch('/api/register', {
+    response = await (await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
-    })).json();
+    }));
+    console.log(response.json());
   }
   catch (ignore) { }
 
-  console.log(result);
-  console.log(result.body);
-  console.log(result.json);
-  console.log(result.text);
-
-  if (!result.changes) {
+  if (!response.changes) {
     document.querySelector('.register').innerHTML = `
       <h3>Something went wrong</h3>
       <p>We could not register you right now because of a technical problem.</p>

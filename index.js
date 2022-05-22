@@ -46,14 +46,21 @@ app.listen(port, () => {
 });
 
 
-// Return all data from the table
+// Return all data from the user table
 app.get('/api/data', async (req, res) => {
 
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
 
-    res.send(result.rows);
+    console.log(result.rows);
+
+    const results = { 'results': (result) ? result.rows : null };
+
+    console.log(results);
+    console.log(JSON.stringify(results));
+
+    res.json(results);
 
   } catch (err) {
     console.error(err);
@@ -72,7 +79,12 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
 
     console.log(result.rows);
 
-    res.send(result);
+    const results = { 'results': (result) ? result.rows : null };
+
+    console.log(results);
+    console.log(JSON.stringify(results));
+
+    res.json(results);
 
   } catch (err) {
     console.error(err);
@@ -94,9 +106,12 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
 
     console.log(result.rows);
 
-    // const results = { 'results': (result) ? result.rows : null };
+    const results = { 'results': (result) ? result.rows : null };
 
-    res.send(result.rows);
+    console.log(results);
+    console.log(JSON.stringify(results));
+
+    res.json(results);
 
   } catch (err) {
     console.error(err);
