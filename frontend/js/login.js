@@ -32,7 +32,6 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     console.log("Log In Error");
 
     document.querySelector('#logInText').innerHTML = '<h1>Log In Error!</h1><p>Please try again.</p>';
-
     return;
   }
 

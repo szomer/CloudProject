@@ -54,16 +54,19 @@ app.listen(port, () => {
 });
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+  if (session.user) {
+    res.redirect('/home');
+  }
+  res.sendFile(path.join(__dirname + '/frontend/index.html'));
 });
 
 app.get('/home', function (req, res) {
   if (req.session.user) {
+    res.sendFile(path.join(__dirname + '/frontend/home.html'));
     res.json(req.session.user);
   } else {
-    res.send('Please login to view this page!');
+    res.sendFile(path.join(__dirname + '/frontend/404noUser.html'));
   }
-  res.end();
 });
 
 // Log in user
@@ -80,8 +83,10 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     if (!result._error) {
       req.session.user = results[0];
       res.redirect('/home');
+    } else {
+      res.status(404);
+      res.json({ _error: 'User does not exist' })
     }
-
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
@@ -143,3 +148,12 @@ app.get('/api/data', async (req, res) => {
 // heroku pg:psql
 //  create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
 // insert into users (name, email, type, password) values ('Suzanne Zomer', 'myemail@gmail.com', 'customer', '12345678');
+
+app.all('*', (req, res) => {
+  if (req.session.user) {
+    res.sendFile(path.join(__dirname + '/frontend/404.html'));
+    res.json(req.session.user);
+  } else {
+    res.sendFile(path.join(__dirname + '/frontend/404noUser.html'));
+  }
+});
