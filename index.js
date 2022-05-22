@@ -84,7 +84,6 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
       return;
     }
 
-    res.status(404);
     res.json({ _error: 'User does not exist' });
   });
 });
