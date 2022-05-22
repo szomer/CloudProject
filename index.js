@@ -74,23 +74,19 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
-  try {
-    const client = await pool.connect();
-    const result = await client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "'");
+  const client = await pool.connect();
+  client.query(("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "';"), (err, res) => {
+    if (err) throw err;
 
-    const results = { 'results': (result) ? result.rows : null };
-
-    if (!result._error) {
-      req.session.user = results[0];
+    for (let row of res.rows) {
+      req.session.user = row;
       res.redirect('/home');
-    } else {
-      res.status(404);
-      res.json({ _error: 'User does not exist' })
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
+
+    res.status(404);
+    res.json({ _error: 'User does not exist' });
+  });
 });
 
 // Check if logged in
