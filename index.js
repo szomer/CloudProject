@@ -54,7 +54,7 @@ app.listen(port, () => {
 });
 
 app.get('/', function (req, res) {
-  if (session.user) {
+  if (req.session.user) {
     res.redirect('/home');
   }
   res.sendFile(path.join(__dirname + '/frontend/index.html'));
@@ -75,17 +75,15 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
   const client = await pool.connect();
-  client.query(("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "';"), (err, res) => {
-    if (err) throw err;
+  const result = client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "';");
 
+  if (!result._error) {
     for (let row of res.rows) {
       req.session.user = row;
-      res.redirect('/home');
-      return;
     }
+  }
 
-    res.json({ _error: 'User does not exist' });
-  });
+  res.json(result);
 });
 
 // Check if logged in

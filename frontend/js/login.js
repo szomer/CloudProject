@@ -36,7 +36,12 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   }
 
   console.log('Log In Success');
-  window.location.replace('./home.html');
+
+  try {
+    loggedIn = await (await fetch('/home')).json();
+  }
+  catch (ignore) { }
+
 });
 
 
