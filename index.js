@@ -53,12 +53,9 @@ app.get('/api/data', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
 
-    console.log(result.rows);
+    delete result.password;
 
     const results = { 'results': (result) ? result.rows : null };
-
-    console.log(results);
-    console.log(JSON.stringify(results));
 
     res.json(results);
 
@@ -77,12 +74,9 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "'");
 
-    console.log(result.rows);
+    delete result.password;
 
     const results = { 'results': (result) ? result.rows : null };
-
-    console.log(results);
-    console.log(JSON.stringify(results));
 
     res.json(results);
 
@@ -104,14 +98,9 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
     const client = await pool.connect();
     const result = await client.query("INSERT INTO users (name, email, type, password) VALUES ('" + fullName + "', '" + req.body[emailField] + "', 'customer', '" + req.body[passwordField] + "')");
 
-    console.log(result.rows);
+    delete req.body[passwordField];
 
-    const results = { 'results': (result) ? result.rows : null };
-
-    console.log(results);
-    console.log(JSON.stringify(results));
-
-    res.json(results);
+    res.json(req.body);
 
   } catch (err) {
     console.error(err);

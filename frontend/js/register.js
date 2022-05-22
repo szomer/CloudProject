@@ -34,22 +34,14 @@ document.querySelector('body').addEventListener('submit', async (event) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
-    }));
-    console.log(response.json());
-  }
-  catch (ignore) { }
+    })).json();
+
+  } catch (ignore) { }
 
   if (!response.changes) {
-    document.querySelector('.register').innerHTML = `
-      <h3>Something went wrong</h3>
-      <p>We could not register you right now because of a technical problem.</p>
-      <p>Please try again later!</p>
-    `;
+    document.querySelector('.register').innerHTML = `<h3>Something went wrong</h3><p>We could not register you right now because of a technical problem.</p><p>Please try again later!</p>`;
     return;
   }
 
-  document.querySelector('.register').innerHTML = `
-    <h3>Welcome as a member</h3>
-    <p>You are now successfully registrered as a member!</p>
-  `;
+  document.querySelector('.register').innerHTML = `<h3>Welcome as a member</h3> <p>You are now successfully registrered as a member!</p>`;
 });

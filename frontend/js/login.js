@@ -29,11 +29,15 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   catch (ignore) { }
 
   if (!response || response._error) {
-    console.log("log in error")
+    console.log("Log In Error");
+
+    document.querySelector('#logInText').innerHTML = '<h1>Log In Error!</h1><p>Please try again.</p>';
+
     return;
   }
 
-  console.log("succesfully logged in");
+  console.log('Log In Success');
+  window.location.replace('./home.html');
 });
 
 
