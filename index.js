@@ -78,9 +78,10 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   }
 
   client.query(query, (err, response) => {
-    console.log("ROWS::: " + response.rows[0]);
+    console.log("VALUE::::" + response.rows[0]);
+    console.log("COUNT::::" + response.rows.length);
 
-    if ((err) || (response.rows.length < 1)) {
+    if ((err) || (typeof response.rows[0] == 'undefined')) {
       res.status(404);
       res.json({ _error: 'No such user' });
 
