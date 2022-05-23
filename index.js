@@ -77,12 +77,12 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     values: [req.body[emailField], req.body[passwordField]],
   }
 
-  client.query(query, (err, res) => {
-    if ((err) || (res.rows[0] == null)) {
+  client.query(query, (err, response) => {
+    if ((err) || (response.rows[0] == null)) {
       res.json({ _error: 'No such user' });
 
     } else {
-      let result = res.rows[0];
+      let result = response.rows[0];
       delete result.password;
       req.session.user = result;
       res.json(result);
