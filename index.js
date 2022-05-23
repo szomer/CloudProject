@@ -70,21 +70,27 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
-  try {
-    const client = await pool.connect();
-    const result = await client.query("SELECT * FROM users WHERE email='" + req.body[emailField] + "' AND password='" + req.body[passwordField] + "'");
-
-    delete result.password;
-
-    const results = { 'results': (result) ? result.rows : null };
-
-    res.json(results);
-
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
+  const client = await pool.connect();
+  const query = {
+    name: 'fetch-user',
+    text: 'SELECT * FROM users WHERE email =$1 AND password = $2',
+    values: [req.body[emailField], req.body[passwordField]],
   }
+
+  client.query(query, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+      res.json('No such user');
+
+    } else {
+      let result = res.rows[0];
+      delete result.password;
+      req.session.user = result;
+      res.json(result);
+    }
+  });
 });
+
 
 // Register new user
 app.post('/api/register', urlencodedParser, async (req, res) => {
