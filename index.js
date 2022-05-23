@@ -79,8 +79,7 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
 
   client.query(query, (err, res) => {
     if ((err) || (res.rows[0] == null)) {
-      console.log(err.stack);
-      res.sendStatus(404);
+      res.json({ _error: 'No such user' });
 
     } else {
       let result = res.rows[0];
