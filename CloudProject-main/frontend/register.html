@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+
+  <link rel="shortcut icon" href="#">
+</head>
+
+<body>
+
+  <a href="./index.html">Log in</a>
+
+  <div class="register">
+    <h1>Register</h1>
+    <form name="registration">
+      <label>
+        <span>First name:</span><input required minlength="2" name="firstName" type="text">
+      </label>
+      <label>
+        <span>Last name:</span><input required minlength="2" name="lastName" type="text">
+      </label>
+      <label>
+        <span>Email:</span><input required name="email" type="email">
+      </label>
+      <label>
+        <span>Password:</span><input required minlength="8" name="password" type="password">
+      </label>
+      <label>
+        <span>Repeat password:</span><input required minlength="8" name="passwordRepeated" type="password">
+      </label>
+      <input type="submit" value="Register">
+    </form>
+  </div>
+
+
+  <script src="./js/register.js"></script>
+
+</body>
+
+</html>
