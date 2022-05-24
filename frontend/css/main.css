@@ -532,6 +532,51 @@ LOGIN Page
   }
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.login {
+  width: 350px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  color: black;
+}
+
+.login h1 {
+  font-size: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 40 px 0;
+
+}
+
+.login span {
+  font-size: 20px;
+  margin: 15px;
+}
+
+.login input {
+  font-size: 16px;
+  width: 100%;
+  padding: 15px 10 px;
+  border: 0;
+  outline: none;
+  border-radius: 5px;
+}
+
+.login-splash {
+  position: center;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: -999;
+}
+
 /*
 =============== 
 Page
