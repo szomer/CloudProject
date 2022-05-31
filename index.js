@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const store = require('better-express-store');
 const passwordEncryptor = require('./passwordEncryptor');
+const jwt = require('jsonwebtoken');
 
 // HTML fields for user input
 const passwordField = 'password';
@@ -48,20 +49,21 @@ app.listen(port, () => {
 
 // Return all data from the user table
 app.get('/api/data', async (req, res) => {
-
   try {
+    console.log('data');
+    // Perform db query
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
-
     delete result.password;
-
     const results = { 'results': (result) ? result.rows : null };
 
+    console.log('DATA::::' + results);
     res.json(results);
 
   } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
+    res.status(404).json({
+      message: 'Problem with requesting data'
+    });
   }
 });
 
@@ -70,6 +72,7 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   // Encrypt the password
   req.body[passwordField] = passwordEncryptor(req.body[passwordField]);
 
+  // Construct db query
   const client = await pool.connect();
   const query = {
     name: 'fetch-user',
@@ -77,12 +80,13 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     values: [req.body[emailField], req.body[passwordField]],
   }
 
+  // Perform db query
   client.query(query, (err, response) => {
     try {
-      console.log('log in');
-      console.log("VALUE::::" + response.rows[0]);
-      console.log("COUNT::::" + response.rows.length);
+      console.log('login');
+      console.log("RESULTCOUNT::::" + response.rows.length);
 
+      // Match found
       if (response.rows.length > 0) {
         let result = response.rows[0];
         delete result.password;
@@ -94,18 +98,6 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         message: 'User does not exist'
       });
     }
-
-    // if ((response.rows.length === 0) || (err)) {
-    //   res.status(404).json({
-    //     message: 'User does not exist'
-    //   });
-
-    // } else {
-    //   let result = response.rows[0];
-    //   delete result.password;
-    //   req.session.user = result;
-    //   res.json(result);
-    // }
   });
 });
 
@@ -119,16 +111,19 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   let fullName = (req.body[firstNameField] + ' ' + req.body[lastNameField]);
 
   try {
+    console.log('register');
+    // Peform query db
     const client = await pool.connect();
     const result = await client.query("INSERT INTO users (name, email, type, password) VALUES ('" + fullName + "', '" + req.body[emailField] + "', 'customer', '" + req.body[passwordField] + "')");
 
+    // Delete password from result
     delete req.body[passwordField];
-
     res.json(req.body);
 
   } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
+    res.status(404).json({
+      message: 'Problem with registering account'
+    });
   }
 });
 

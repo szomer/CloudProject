@@ -26,19 +26,23 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 
     console.log(response.json());
   }
-  catch (ignore) { }
+  catch (ignore) {
+    console.log("Log In Error");
+    document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
+    return;
+  }
 
   if (!response || response._error) {
     console.log("Log In Error");
-
     document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
-
     return;
   }
 
   console.log('Log In Success');
   window.location.replace('./home.html');
 });
+
+
 
 
 async function getData() {
