@@ -78,19 +78,34 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   }
 
   client.query(query, (err, response) => {
-    console.log("VALUE::::" + response.rows[0]);
-    console.log("COUNT::::" + response.rows.length);
+    try {
+      console.log('log in');
+      console.log("VALUE::::" + response.rows[0]);
+      console.log("COUNT::::" + response.rows.length);
 
-    if ((response.rows.length === 0) || (err)) {
-      res.status(404);
-      res.json({ _error: 'No such user' });
-
-    } else {
-      let result = response.rows[0];
-      delete result.password;
-      req.session.user = result;
-      res.json(result);
+      if (response.rows.length > 0) {
+        let result = response.rows[0];
+        delete result.password;
+        req.session.user = result;
+        res.json(result);
+      }
+    } catch (err) {
+      res.status(404).json({
+        message: 'User does not exist'
+      });
     }
+
+    // if ((response.rows.length === 0) || (err)) {
+    //   res.status(404).json({
+    //     message: 'User does not exist'
+    //   });
+
+    // } else {
+    //   let result = response.rows[0];
+    //   delete result.password;
+    //   req.session.user = result;
+    //   res.json(result);
+    // }
   });
 });
 
