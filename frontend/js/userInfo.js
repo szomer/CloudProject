@@ -28,7 +28,7 @@ async function setUserInfo() {
     console.log('logged in')
     document.querySelector(".nav-link-contact-link").innerHTML = `
         Logged in as ${email}. 
-        <a href="/logout" class="btn">Log Out</a>`;
+        <a href="/logout" class="btn" onclick:"logOut()">Log Out</a>`;
   }
 }
 
@@ -39,12 +39,8 @@ document.querySelector('body').addEventListener('click', async (event) => {
   // do not follow the link
   event.preventDefault();
 
-  // log out using our REST-api
-  let result;
-  try {
-    result = await (await fetch('/api/login', { method: 'DELETE' })).json();
-  }
-  catch (ignore) { }
+  localStorage.removeItem('cred');
+  localStorage.removeItem('token');
 
   window.location.replace('./index.html');
 });
