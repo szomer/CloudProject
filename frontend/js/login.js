@@ -44,7 +44,10 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   console.log(response.body);
   console.log(JSON.stringify(response.token));
 
-  window.location.replace('./home.html');
+  localStorage.setItem('token', 'fake token');
+  console.log('storing :' + 'fake token');
+
+  // window.location.replace('./home.html');
 });
 
 

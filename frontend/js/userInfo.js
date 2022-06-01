@@ -8,7 +8,11 @@ async function setUserInfo() {
   console.log('email:' + email);
 
   try {
-    loggedIn = await (await fetch('/api/login', { token: jwt })).json();
+    loggedIn = await (await fetch('/api/login', {
+      headers: {
+        'Authorization': 'Bearer ' + jwt,
+      }
+    })).json();
     console.log(loggedIn);
   }
   catch (ignore) { }
@@ -17,7 +21,7 @@ async function setUserInfo() {
   if (!loggedIn || loggedIn._error) {
     console.log('err log in')
     document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
-    window.location.replace('./404noUser.html');
+    // window.location.replace('./404noUser.html');
 
   } else {
     console.log('logged in')
