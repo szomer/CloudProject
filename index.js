@@ -142,6 +142,9 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
       }).end();
     }
   });
+  res.status(404).json({
+    message: 'User does not exist'
+  }).end();
 });
 
 // Register new user
