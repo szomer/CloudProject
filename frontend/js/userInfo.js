@@ -2,12 +2,17 @@ async function setUserInfo() {
 
   let loggedIn;
   let email = localStorage.getItem('cred');
-  //retrieve token
   let jwt = localStorage.getItem('token');
+
+  if (!email || !jwt) {
+    console.log('err log in')
+    document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
+    // window.location.replace('./404noUser.html');
+    return;
+  }
 
   console.log('email:' + email);
   console.log('token:' + token);
-
 
   try {
     loggedIn = await (await fetch('/api/login', {
@@ -25,6 +30,7 @@ async function setUserInfo() {
     console.log('err log in')
     document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
     // window.location.replace('./404noUser.html');
+    return;
 
   } else {
     console.log('logged in')

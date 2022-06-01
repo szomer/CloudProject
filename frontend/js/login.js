@@ -33,16 +33,12 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     localStorage.setItem('cred', requestBody.email);
     console.log('storing :' + requestBody.email);
 
-    // store token
-    console.log(response.requestBody);
-    console.log(response.requestBody.jwt);
-    console.log(JSON.stringify(response.requestBody.jwt));
-    console.log(JSON.stringify(response));
-    console.log((response.requestBody).json());
-    console.log(response.json());
+    // store token   
 
-    localStorage.setItem('token', 'random token');
-    console.log('storing :' + 'random token');
+    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
+    console.log('storing :' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
+
+    console.log(JSON.stringify(response.obj.jwt));
 
     // window.location.replace('./home.html');
 
