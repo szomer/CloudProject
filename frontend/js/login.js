@@ -21,23 +21,21 @@ document.querySelector('body').addEventListener('submit', async (event) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
-    }).then(res => res.json())
-      .then(data => obj = data)
-      .then(() => console.log(obj)));
-
+    })).json();
+    console.log(response);
   } catch (ignore) {
     console.log("Log In Error");
     document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
     return;
   }
 
-  if (!(obj == null)) {
+  if (!(response == null)) {
     console.log('Log In Success');
 
     localStorage.setItem('cred', requestBody.email);
-    localStorage.setItem('token', obj);
+    localStorage.setItem('token', response);
     console.log('storing :' + requestBody.email);
-    console.log('storing :' + obj);
+    console.log('storing :' + response);
 
     window.location.replace('./home.html');
 
