@@ -38,7 +38,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 
   } catch (ignore) { }
 
-  if (!response.changes) {
+  if (!(response == null)) {
     document.querySelector('.register').innerHTML = `<h3>Something went wrong</h3><p>We could not register you right now because of a technical problem.</p><p>Please try again later!</p>`;
     return;
   }
