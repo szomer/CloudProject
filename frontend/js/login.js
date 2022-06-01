@@ -31,7 +31,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 
-  if (response && !response._error) {
+  if (!(obj == null)) {
     console.log('Log In Success');
 
     localStorage.setItem('cred', requestBody.email);

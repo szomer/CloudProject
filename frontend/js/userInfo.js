@@ -10,7 +10,7 @@ async function setUserInfo() {
   if (email == null || token == null || !email || !token) {
     console.log('err log in')
     document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
-    window.location.replace('./404noUser.html');
+    // window.location.replace('./404noUser.html');
     return;
   }
 

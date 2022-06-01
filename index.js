@@ -89,11 +89,6 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-app.get('/jwt', (req, res) => {
-  let token = jwt.sign({ "body": "randomdata" }, JWT_SECRET, { algorithm: 'HS256' });
-  res.send(token).end();
-})
-
 // Check if user logged in
 app.get('/api/login', authenticateToken, async (req, res) => {
   console.log('check log in');
@@ -174,8 +169,9 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
-// Add BMI stats to db
+// Add BMI to db
 app.post('/api/bmi', urlencodedParser, async (req, res) => {
+
   //user data
   let bmi = req.body[bmi];
   let weight = req.body[weight];
@@ -197,7 +193,6 @@ app.post('/api/bmi', urlencodedParser, async (req, res) => {
   }
 });
 
-// Authenticate user with token
 function authenticateToken(req, res, next) {
   const token = req.header('auth-token');
   console.log(token);
@@ -212,6 +207,12 @@ function authenticateToken(req, res, next) {
     res.status(400).send('Invalid Token').end;
   }
 }
+
+app.get('/jwt', (req, res) => {
+  let token = jwt.sign({ "body": "randomdata" }, JWT_SECRET, { algorithm: 'HS256' });
+  res.send(token).end();
+})
+
 
 // heroku pg:psql
 // create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
