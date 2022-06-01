@@ -1,19 +1,28 @@
 async function setUserInfo() {
-  let div = document.querySelector('.nav-link-contact-link');
 
-  let loggedIn = false;
+  let loggedIn;
+  let email = localStorage.getItem('cred');
+  //retrieve token
+  let jwt = localStorage.getItem('token');
+
+  console.log('email:' + email);
+
   try {
-    loggedIn = await (await fetch('/api/login')).json();
+    loggedIn = await (await fetch('/api/login', { token: jwt })).json();
+    console.log(loggedIn);
   }
   catch (ignore) { }
 
+
   if (!loggedIn || loggedIn._error) {
-    div.innerHTML = `
-      Currently not logged in. <a href="/index.html" class="btn">Log In</a>
-      `;
+    console.log('err log in')
+    document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
+    window.location.replace('./404noUser.html');
+
   } else {
-    div.innerHTML = `
-        Logged in as ${loggedIn.firstName} ${loggedIn.lastName}. 
+    console.log('logged in')
+    document.querySelector(".nav-link-contact-link").innerHTML = `
+        Logged in as ${email}. 
         <a href="/logout" class="btn">Log Out</a>`;
   }
 }

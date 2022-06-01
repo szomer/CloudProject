@@ -39,6 +39,12 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   }
 
   console.log('Log In Success');
+
+  localStorage.setItem('cred' + requestBody.email);
+  console.log('storing :' + requestBody.email);
+
+  // store token
+
   window.location.replace('./home.html');
 });
 

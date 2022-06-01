@@ -6,13 +6,16 @@ const session = require('express-session');
 const store = require('better-express-store');
 const passwordEncryptor = require('./passwordEncryptor');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
+const JWT_SECRET = "goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu";
+
 
 // HTML fields for user input
 const passwordField = 'password';
 const emailField = 'email';
 const firstNameField = 'firstName';
 const lastNameField = 'lastName';
-
 
 // DB connection
 const { Pool } = require('pg');
@@ -67,6 +70,19 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+app.get('/jwt', (req, res) => {
+  let token = jwt.sign({ "body": "randomdata" }, JWT_SECRET, { algorithm: 'HS256' });
+  res.send(token);
+})
+
+// Check if user logged in
+app.get('/api/login', authenticateToken, async (req, res) => {
+  console.log('check log in');
+  res.status(200).json({
+    message: 'Logged In'
+  });
+});
+
 // Log in user
 app.post('/api/login', urlencodedParser, async (req, res) => {
   // Encrypt the password
@@ -91,7 +107,13 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         let result = response.rows[0];
         delete result.password;
         req.session.user = result;
-        res.json(result);
+
+        let email = req.body[emailField];
+
+        let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
+        res.send(token);
+
+        // res.json(result);
       }
     } catch (err) {
       res.status(404).json({
@@ -100,6 +122,8 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
     }
   });
 });
+
+
 
 
 // Register new user
@@ -127,6 +151,27 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
+
+function generateAccessToken(username) {
+  return jwt.sign(username, JWT_SECRET, { expiresIn: '1800s' });
+}
+
+
+function authenticateToken(req, res, next) {
+  const token = req.header('auth-token');
+
+  console.log(token);
+
+  if (!token) return res.status(401).send('Access Denied');
+
+  try {
+    const verified = jwt.verify(token, JWT_SECRET);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(400).send('Invalid Token');
+  }
+}
 
 
 // heroku pg:psql
