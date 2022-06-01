@@ -111,13 +111,15 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
 
         let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
         console.log(token);
+        console.log(JSON.stringify(token));
 
         var obj = {
           "jwt": token
         };
-
         console.log(JSON.stringify(obj.jwt));
-        res.send(obj).end();
+        // res.json(token).end();
+
+        res.send(JSON.stringify(token)).end();
       }
     } catch (err) {
       console.log("log in error");

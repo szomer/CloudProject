@@ -38,7 +38,9 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
     console.log('storing :' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
 
-    console.log(JSON.stringify(response.obj.jwt));
+    console.log((response));
+    console.log((response).json());
+
 
     // window.location.replace('./home.html');
 
