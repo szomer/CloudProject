@@ -40,12 +40,11 @@ document.querySelector('body').addEventListener('submit', async (event) => {
   console.log('storing :' + requestBody.email);
 
   // store token
-  console.log(response.token);
+  console.log(response.jwt);
   console.log(response.body);
-  console.log(JSON.stringify(response.token));
-
-  localStorage.setItem('token', 'fake token');
-  console.log('storing :' + 'fake token');
+  console.log(JSON.stringify(response));
+  console.log(response.jwt.json());
+  console.log(response.json());
 
   // window.location.replace('./home.html');
 });

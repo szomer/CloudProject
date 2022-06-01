@@ -14,6 +14,7 @@ async function setUserInfo() {
       }
     })).json();
     console.log(loggedIn);
+
   }
   catch (ignore) { }
 
