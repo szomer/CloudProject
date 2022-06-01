@@ -23,6 +23,9 @@ Suzanne Zomer, Nishat Jahan, Malek Alabed, Cristina Rus
 3. JsonWebToken
 4. PostgreSQL
 
+![Alt text](img2.PNG?raw=true "Application")
+>*Visual representation of user logging in with the use of JWT*
+
 ---
 
 ## Running the website
