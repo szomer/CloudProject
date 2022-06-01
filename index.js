@@ -174,9 +174,8 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
-// Register new user
+// Add BMI stats to db
 app.post('/api/bmi', urlencodedParser, async (req, res) => {
-
   //user data
   let bmi = req.body[bmi];
   let weight = req.body[weight];
@@ -198,7 +197,7 @@ app.post('/api/bmi', urlencodedParser, async (req, res) => {
   }
 });
 
-
+// Authenticate user with token
 function authenticateToken(req, res, next) {
   const token = req.header('auth-token');
   console.log(token);
@@ -213,7 +212,6 @@ function authenticateToken(req, res, next) {
     res.status(400).send('Invalid Token').end;
   }
 }
-
 
 // heroku pg:psql
 // create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
