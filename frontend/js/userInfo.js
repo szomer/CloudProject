@@ -6,6 +6,8 @@ async function setUserInfo() {
   let jwt = localStorage.getItem('token');
 
   console.log('email:' + email);
+  console.log('token:' + token);
+
 
   try {
     loggedIn = await (await fetch('/api/login', {

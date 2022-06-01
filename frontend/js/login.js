@@ -34,11 +34,15 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     console.log('storing :' + requestBody.email);
 
     // store token
-    console.log(response.jwt);
-    console.log(JSON.stringify(response.jwt));
+    console.log(response.requestBody);
+    console.log(response.requestBody.jwt);
+    console.log(JSON.stringify(response.requestBody.jwt));
     console.log(JSON.stringify(response));
-    console.log((response.jwt).json());
+    console.log((response.requestBody).json());
     console.log(response.json());
+
+    localStorage.setItem('token', 'random token');
+    console.log('storing :' + 'random token');
 
     // window.location.replace('./home.html');
 

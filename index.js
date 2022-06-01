@@ -104,26 +104,23 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
 
       // Match found
       if (response.rows.length > 0) {
-        let result = response.rows[0];
-        delete result.password;
-        req.session.user = result;
+        console.log("OBJ:::::");
 
         let email = req.body[emailField];
-        let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
+        console.log(email);
 
+        let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
+        console.log(token);
 
         var obj = {
           "jwt": token
         };
-        console.log("OBJ:::::");
-        console.log(token);
+
         console.log(JSON.stringify(obj.jwt));
-
         res.send(obj).end();
-
-        // res.json(result);
       }
     } catch (err) {
+      console.log("log in error");
       res.status(404).json({
         message: 'User does not exist'
       }).end();
