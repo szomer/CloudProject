@@ -109,9 +109,12 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         req.session.user = result;
 
         let email = req.body[emailField];
-
         let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
-        res.json(token).end();
+
+        let obj = { "jwt": token }
+        console.log("obj: " + JSON.stringify(obj));
+
+        res.json(obj).end();
 
         // res.json(result);
       }

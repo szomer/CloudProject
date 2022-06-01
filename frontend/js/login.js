@@ -14,7 +14,6 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     requestBody[element.name] = element.value;
   }
 
-
   let response;
   try {
     response = await (await fetch('/api/login', {
@@ -28,25 +27,26 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 
-  if (!response || response._error) {
+  if (response && !response._error) {
+    console.log('Log In Success');
+
+    localStorage.setItem('cred', requestBody.email);
+    console.log('storing :' + requestBody.email);
+
+    // store token
+    console.log(response.jwt);
+    console.log(JSON.stringify(response.jwt));
+    console.log(JSON.stringify(response));
+    console.log((response.jwt).json());
+    console.log(response.json());
+
+    // window.location.replace('./home.html');
+
+  } else {
     console.log("Log In Error");
-    document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
+    document.querySelector('#logInText').innerHTML = '<p>Log In Error! Please try again.</p>';
     return;
   }
-
-  console.log('Log In Success');
-
-  localStorage.setItem('cred', requestBody.email);
-  console.log('storing :' + requestBody.email);
-
-  // store token
-  console.log(response.jwt);
-  console.log(response.body);
-  console.log(JSON.stringify(response));
-  console.log(response.jwt.json());
-  console.log(response.json());
-
-  // window.location.replace('./home.html');
 });
 
 
