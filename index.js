@@ -61,7 +61,7 @@ app.get('/api/data', async (req, res) => {
     const results = { 'results': (result) ? result.rows : null };
 
     console.log('DATA::::' + results);
-    res.json(results);
+    res.send(results);
 
   } catch (err) {
     res.status(404).json({
@@ -123,9 +123,6 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
   });
 });
 
-
-
-
 // Register new user
 app.post('/api/register', urlencodedParser, async (req, res) => {
   // Encrypt the password
@@ -151,15 +148,8 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
-
-function generateAccessToken(username) {
-  return jwt.sign(username, JWT_SECRET, { expiresIn: '1800s' });
-}
-
-
 function authenticateToken(req, res, next) {
   const token = req.header('auth-token');
-
   console.log(token);
 
   if (!token) return res.status(401).send('Access Denied');

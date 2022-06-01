@@ -14,7 +14,6 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     requestBody[element.name] = element.value;
   }
 
-  console.log("reqbody: " + requestBody);
 
   let response;
   try {
@@ -23,10 +22,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
     }));
-
-    console.log(response.json());
-  }
-  catch (ignore) {
+  } catch (ignore) {
     console.log("Log In Error");
     document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
     return;
@@ -40,14 +36,16 @@ document.querySelector('body').addEventListener('submit', async (event) => {
 
   console.log('Log In Success');
 
-  localStorage.setItem('cred' + requestBody.email);
+  localStorage.setItem('cred', requestBody.email);
   console.log('storing :' + requestBody.email);
 
   // store token
+  console.log(response.token);
+  console.log(response.body);
+  console.log(JSON.stringify(response.token));
 
   window.location.replace('./home.html');
 });
-
 
 
 
