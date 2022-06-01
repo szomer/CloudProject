@@ -20,7 +20,7 @@ document.querySelector('body').addEventListener('submit', async (event) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody)
-    }));
+    })).json();
   } catch (ignore) {
     console.log("Log In Error");
     document.querySelector('#logInText').innerHTML = '<p>Log In Error!</p><p>Please try again.</p>';
@@ -31,18 +31,11 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     console.log('Log In Success');
 
     localStorage.setItem('cred', requestBody.email);
+    localStorage.setItem('token', response.value);
     console.log('storing :' + requestBody.email);
+    console.log('storing :' + response.value);
 
-    // store token   
-
-    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
-    console.log('storing :' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJib2R5IjoiZW1haWxAZ21haWwuY29tIiwiaWF0IjoxNjU0MDgxNTQwfQ.XWzpVnzKEdXjjl6QurVHcIbMCkAWT3WWLJtzLb4updA');
-
-    console.log((response));
-    console.log((response).json());
-
-
-    // window.location.replace('./home.html');
+    window.location.replace('./home.html');
 
   } else {
     console.log("Log In Error");

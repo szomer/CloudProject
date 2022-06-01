@@ -2,22 +2,22 @@ async function setUserInfo() {
 
   let loggedIn;
   let email = localStorage.getItem('cred');
-  let jwt = localStorage.getItem('token');
+  let token = localStorage.getItem('token');
 
-  if (!email || !jwt) {
+  console.log('email:' + email);
+  console.log('token:' + token);
+
+  if (email == null || token == null || !email || !token) {
     console.log('err log in')
     document.querySelector(".nav-link-contact-link").innerHTML = 'Currently not logged in. <a href="/index.html" class="btn">Log In</a>';
     // window.location.replace('./404noUser.html');
     return;
   }
 
-  console.log('email:' + email);
-  console.log('token:' + token);
-
   try {
     loggedIn = await (await fetch('/api/login', {
       headers: {
-        'Authorization': 'Bearer ' + jwt,
+        'Authorization': 'Bearer ' + token,
       }
     })).json();
     console.log(loggedIn);
