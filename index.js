@@ -70,7 +70,7 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
-// Return all data from the user table
+// Return all data from the stats table
 app.get('/api/stats', async (req, res) => {
   try {
     console.log('stats');
@@ -84,7 +84,7 @@ app.get('/api/stats', async (req, res) => {
 
   } catch (err) {
     res.status(404).json({
-      message: 'Problem with requesting data'
+      message: 'Problem with requesting stats'
     }).end();
   }
 });
@@ -145,7 +145,7 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         message: 'User does not exist'
       }).end();
     }
-  }); 
+  });
 });
 
 // Register new user
