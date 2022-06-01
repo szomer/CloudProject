@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Calculator with JavaScript</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="js/bmi.js" defer></script>
+  <script src="js/stats.js"></script>
+
+</head>
+
+<body>
+  <!-- nav  -->
+  <nav class="navbar">
+    <div class="nav-center">
+      <!--header--->
+      <div class="nav-header">
+        <a href="index.html" class="nav-logo">
+          <img src="./image/logonew.png" alt="Where's the food" />
+        </a>
+        <button class="nav-btn btn">
+          <i class="fas fa-align-justify"></i>
+        </button>
+      </div>
+      <!----links--->
+      <div class="nav-links">
+        <a href="home.html" class="nav-link"> Home </a>
+        <a href="recipes.html" class="nav-link"> Recipes </a>
+        <a href="exersices.html" class="nav-link"> Exersices </a>
+        <a href="diets.html" class="nav-link"> Diet Plan </a>
+
+        <div class="nav-link-contact-link">
+          <a href="index.html" class="btn"> log out </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- end of nav -->
+  <!-- header -->
+  <header class="hero">
+    <div class="hero-container">
+      <div class="hero-text">
+        <h1>D.I.E.T</h1>
+        <h4>DID I EAT THAT ????</h4>
+      </div>
+    </div>
+  </header>
+  <!-- end of header -->
+  <div class="center">
+    <section>
+      <p>
+        Height in CM: <input type="text" id="height" /><br /><span id="height_error"></span>
+      </p>
+
+      <p>
+        Weight in KG: <input type="text" id="weight" /><br /><span id="weight_error"></span>
+      </p>
+
+      <button id="btn">Calculate</button>
+      <p id="output"></p>
+      <table id="table-contents" class="center">
+      </table>
+    </section>
+
+  </div>
+</body>
+
+</html>

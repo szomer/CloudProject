@@ -20,7 +20,7 @@ const lastNameField = 'lastName';
 // DB connection
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgres://gbdmlitkhmtsgv:3c20b079ea39b588655589de8df1a39dc755e18d012f27ba90af9be6b9e8f9ae@ec2-3-248-121-12.eu-west-1.compute.amazonaws.com:5432/de23234j8ind78",
   ssl: {
     rejectUnauthorized: false
   }
@@ -145,7 +145,7 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         message: 'User does not exist'
       }).end();
     }
-  }); 
+  });
 });
 
 // Register new user
@@ -177,9 +177,9 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
 app.post('/api/bmi', urlencodedParser, async (req, res) => {
 
   //user data
-  let bmi = req.body[bmi];
-  let weight = req.body[weight];
-  let height = req.body[height];
+  let bmi = req.body.bmi;
+  let weight = req.body.weight;
+  let height = req.body.height;
 
   try {
     console.log('add stats to db');
