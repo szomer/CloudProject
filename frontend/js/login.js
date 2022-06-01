@@ -31,13 +31,13 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 
-  if (response && !response._error) {
+  if (!(obj == null)) {
     console.log('Log In Success');
 
     localStorage.setItem('cred', requestBody.email);
     localStorage.setItem('token', obj);
     console.log('storing :' + requestBody.email);
-    console.log('storing :' + response.value);
+    console.log('storing :' + obj);
 
     window.location.replace('./home.html');
 
@@ -47,8 +47,6 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 });
-
-
 
 async function getData() {
   await fetch('api/data')

@@ -70,6 +70,25 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+// Return all data from the user table
+app.get('/api/stats', async (req, res) => {
+  try {
+    console.log('stats');
+    // Perform db query
+    const client = await pool.connect();
+    const result = await client.query('SELECT * FROM stats');
+    const results = { 'results': (result) ? result.rows : null };
+
+    console.log('STATS::::' + results);
+    res.send(results).end();
+
+  } catch (err) {
+    res.status(404).json({
+      message: 'Problem with requesting data'
+    }).end();
+  }
+});
+
 app.get('/jwt', (req, res) => {
   let token = jwt.sign({ "body": "randomdata" }, JWT_SECRET, { algorithm: 'HS256' });
   res.send(token).end();
@@ -155,6 +174,31 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
   }
 });
 
+// Register new user
+app.post('/api/bmi', urlencodedParser, async (req, res) => {
+
+  //user data
+  let bmi = req.body[bmi];
+  let weight = req.body[weight];
+  let height = req.body[height];
+
+  try {
+    console.log('add stats to db');
+    // Peform query db
+    const client = await pool.connect();
+    const result = await client.query("INSERT INTO stats (bmi, height, weight) VALUES ('" + bmi + "', '" + height + "', " + "'" + weight + "');");
+
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results).end();
+
+  } catch (err) {
+    res.status(404).json({
+      message: 'Problem with adding stats to database'
+    }).end();
+  }
+});
+
+
 function authenticateToken(req, res, next) {
   const token = req.header('auth-token');
   console.log(token);
@@ -172,5 +216,7 @@ function authenticateToken(req, res, next) {
 
 
 // heroku pg:psql
-//  create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
-// insert into users (name, email, type, password) values ('Suzanne Zomer', 'myemail@gmail.com', 'customer', '12345678');
+// create table users (id SERIAL, name varchar(30), email varchar(30), type varchar(30), password varchar(255));
+// create table stats (id SERIAL, bmi varchar(30), height varchar(30), weight varchar(30));
+// insert into users (name, email, type, password) values ('', '', '', '');
+// insert into stats (bmi, height, weight) values('', '', '');
