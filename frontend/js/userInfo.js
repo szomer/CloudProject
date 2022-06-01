@@ -19,9 +19,10 @@ async function setUserInfo() {
       headers: {
         'Authorization': 'Bearer ' + token,
       }
-    })).json();
+    }).then(res => res.json())
+      .then(data => obj = data)
+      .then(() => console.log(obj)));
     console.log(loggedIn);
-
   }
   catch (ignore) { }
 
