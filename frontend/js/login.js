@@ -29,20 +29,19 @@ document.querySelector('body').addEventListener('submit', async (event) => {
     return;
   }
 
-  if (!(response == null)) {
+  if (!(response.jwt == null)) {
     console.log('Log In Success');
 
     localStorage.setItem('cred', requestBody.email);
-    localStorage.setItem('token', response);
+    localStorage.setItem('token', response.jwt);
     console.log('storing :' + requestBody.email);
-    console.log('storing :' + response);
+    console.log('storing :' + response.jwt);
 
     window.location.replace('./home.html');
 
   } else {
     console.log("Log In Error");
     document.querySelector('#logInText').innerHTML = '<p>Log In Error! Please try again.</p>';
-    return;
   }
 });
 

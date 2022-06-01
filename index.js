@@ -133,7 +133,11 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         console.log(JSON.stringify(obj.jwt));
         // res.json(token).end();
 
-        res.send(JSON.stringify(token)).end();
+        res.json(obj).end();
+      } else {
+        res.status(404).json({
+          message: 'User does not exist'
+        }).end();
       }
     } catch (err) {
       console.log("log in error");
@@ -141,10 +145,7 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         message: 'User does not exist'
       }).end();
     }
-  });
-  res.status(404).json({
-    message: 'User does not exist'
-  }).end();
+  }); 
 });
 
 // Register new user
