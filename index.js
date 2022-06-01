@@ -61,18 +61,18 @@ app.get('/api/data', async (req, res) => {
     const results = { 'results': (result) ? result.rows : null };
 
     console.log('DATA::::' + results);
-    res.send(results);
+    res.send(results).end();
 
   } catch (err) {
     res.status(404).json({
       message: 'Problem with requesting data'
-    }).end;
+    }).end();
   }
 });
 
 app.get('/jwt', (req, res) => {
   let token = jwt.sign({ "body": "randomdata" }, JWT_SECRET, { algorithm: 'HS256' });
-  res.send(token).end;
+  res.send(token).end();
 })
 
 // Check if user logged in
@@ -80,7 +80,7 @@ app.get('/api/login', authenticateToken, async (req, res) => {
   console.log('check log in');
   res.status(200).json({
     message: 'Logged In'
-  }).end;
+  }).end();
 });
 
 // Log in user
@@ -111,14 +111,14 @@ app.post('/api/login', urlencodedParser, async (req, res) => {
         let email = req.body[emailField];
 
         let token = jwt.sign({ "body": email }, JWT_SECRET, { algorithm: 'HS256' });
-        res.send({ jwt: token }).end;
+        res.json(token).end();
 
         // res.json(result);
       }
     } catch (err) {
       res.status(404).json({
         message: 'User does not exist'
-      }).end;
+      }).end();
     }
   });
 });
@@ -139,12 +139,12 @@ app.post('/api/register', urlencodedParser, async (req, res) => {
 
     // Delete password from result
     delete req.body[passwordField];
-    res.json(req.body).end;
+    res.json(req.body).end();
 
   } catch (err) {
     res.status(404).json({
       message: 'Problem with registering account'
-    }).end;
+    }).end();
   }
 });
 
